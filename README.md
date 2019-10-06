@@ -13,7 +13,7 @@ TensorFlow.js Regression sample (BETA)
 ***
 ### blog
 
-
+https://knaka0209.hatenablog.com/entry/tfjs_2
 
 ***
 
