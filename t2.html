@@ -1,0 +1,50 @@
+<!-- 
+tensorflow.js のテスト  ,回帰モデル
+https://codelabs.developers.google.com/codelabs/tfjs-training-regression/index.html?hl=ja#0
+--->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TensorFlow.js Tutorial</title>
+  <!-- Import TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+  <!-- Import tfjs-vis -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+
+  <script src="js/train.js"></script>
+
+</head>
+
+<body>
+<h1>tensorflow.js test</h1>
+<hr />
+
+</body>
+<script>
+console.log('Hello TensorFlow');
+
+/******************************** 
+*
+*********************************/
+async function run_train() {
+    const model = createModel();  
+
+    const data = await getData();
+//    console.log(data[0] )
+//    return
+    const tensorData = convertToTensor(data);
+    const {inputs, labels} = tensorData;
+        
+    // Train the model  
+	await trainModel(model, inputs, labels, tensorData);
+    console.log('Done Training');
+}
+/******************************** 
+* main
+*********************************/
+document.addEventListener('DOMContentLoaded', run_train );
+//const xs = tf.linspace(1, 50 ,100); 
+//console.log(xs.dataSync() );
+
+</script>
+</html>
