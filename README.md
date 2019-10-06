@@ -8,7 +8,7 @@
 
 ***
 
-TensorFlow.js Regression sample
+TensorFlow.js Regression sample (BETA)
 
 ***
 ### blog
