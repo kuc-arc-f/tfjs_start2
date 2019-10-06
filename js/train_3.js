@@ -7,8 +7,8 @@
 	const carsData = await carsDataReq.json();  
 //console.log(carsData)
 	const cleaned = carsData.map(car => ({
-		no: car.no,
 		hnum: car.hnum,
+		no: car.no,
 	}))
 
 	return cleaned;
@@ -20,8 +20,8 @@ async function run() {
   // Load and plot the original input data that we are going to train on.
   const data = await getData();
   const values = data.map(d => ({
-    x: d.horsepower,
-    y: d.mpg,
+    x: d.no,
+    y: d.hnum,
   }));
   //console.log( "len="+ values.length )
 //  console.log( values )
@@ -30,8 +30,8 @@ async function run() {
     {name: 'Horsepower v MPG'},
     {values}, 
     {
-      xLabel: 'Horsepower',
-      yLabel: 'MPG',
+      xLabel: 'xs',
+      yLabel: 'hnum',
       height: 300
     }
   );
@@ -54,10 +54,10 @@ function createModel() {
 *********************************/
 function convertToTensor(data) {
   return tf.tidy(() => {
-//	tf.util.shuffle(data);
+	tf.util.shuffle(data);
 	
-    const inputs = data.map(d => d.hnum)
-    const labels = data.map(d => d.no );
+    const inputs = data.map(d => d.no)   //X- axis
+    const labels = data.map(d => d.hnum ); //Y-axis
 
 //	console.log(labels)
 //	return
@@ -99,9 +99,6 @@ async function trainModel(model, inputs, labels, tensorData) {
 
 	const batchSize = 32;
 	const epochs = 50;
-//	const epochs = 30;
-
-//	return model.fit(inputs,labels,{epochs: epochs });
 	 model.fit(inputs,labels,{epochs: epochs });
 	console.log('#fit-complete');
 	//pred
@@ -109,22 +106,12 @@ async function trainModel(model, inputs, labels, tensorData) {
 		const xs = tf.linspace(0, 1, 100);      
 		const preds = model.predict(xs.reshape([100, 1]));      
 
-		/* 
 		const unNormXs = xs
 			.mul(inputMax.sub(inputMin))
-			.add(inputMin);
-		*/
-		const unNormXs = xs
-			.mul(labelMax.sub(labelMin))
-			.add(labelMin);
-/* 
-		const unNormPreds = preds
-			.mul(labelMax.sub(labelMin))
-			.add(labelMin);
-*/
-		const unNormPreds = preds
-		.mul(inputMax.sub(inputMin))
-		.add(inputMin);
+            .add(inputMin);
+        const unNormPreds = preds
+        .mul(labelMax.sub(labelMin))
+        .add(labelMin);
 
 		// Un-normalize the data
 		return [unNormXs.dataSync(), unNormPreds.dataSync()];

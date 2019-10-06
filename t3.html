@@ -11,7 +11,7 @@ https://codelabs.developers.google.com/codelabs/tfjs-training-regression/index.h
   <!-- Import tfjs-vis -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
 
-  <script src="js/train.js"></script>
+  <script src="js/train_3.js"></script>
 
 </head>
 
@@ -30,11 +30,10 @@ async function run_train() {
     const model = createModel();  
 
     const data = await getData();
-//    console.log(data[0] )
-//    return
     const tensorData = convertToTensor(data);
     const {inputs, labels} = tensorData;
-        
+//console.log(labels.dataSync() )
+//return      
     // Train the model  
 	await trainModel(model, inputs, labels, tensorData);
     console.log('Done Training');
@@ -42,6 +41,7 @@ async function run_train() {
 /******************************** 
 * main
 *********************************/
+//document.addEventListener('DOMContentLoaded', run);
 document.addEventListener('DOMContentLoaded', run_train );
 //const xs = tf.linspace(1, 50 ,100); 
 //console.log(xs.dataSync() );
