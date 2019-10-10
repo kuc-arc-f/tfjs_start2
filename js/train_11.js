@@ -43,7 +43,7 @@ function createModel() {
     const model = tf.sequential(); 
     model.add(tf.layers.dense({units: 8, inputShape: [1]  }));
     model.add(tf.layers.dense({units: 4, activation: 'sigmoid'}));
-    model.add(tf.layers.dense({units: 1 , activation: 'sigmoid' }));
+    model.add(tf.layers.dense({units: 1  }));
     return model;
 }
 /******************************** 
