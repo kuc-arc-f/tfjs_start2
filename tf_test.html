@@ -1,7 +1,7 @@
 <!-- 
 tensorflow.js のテスト  ,回帰モデル
 https://codelabs.developers.google.com/codelabs/tfjs-training-regression/index.html?hl=ja#0
- chart実装の追加
+ 2019/10/10 : モデル等の再調整
 --->
 <!DOCTYPE html>
 <html>
@@ -13,7 +13,7 @@ https://codelabs.developers.google.com/codelabs/tfjs-training-regression/index.h
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
     <!-- chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
-    <script src="js/train_5.js"></script>
+    <script src="js/train_10.js"></script>
     <script src="js/pred_chart.js"></script>
 
 </head>
@@ -25,7 +25,7 @@ https://codelabs.developers.google.com/codelabs/tfjs-training-regression/index.h
 
 </body>
 <script>
-console.log('Hello TensorFlow, t4');
+console.log('Hello TensorFlow, t10');
 
 /******************************** 
 *
@@ -35,15 +35,22 @@ async function run_train() {
 
     const data = await getData();
     var chart_dats = convert_chart_arr(data)
-//console.log(chart_dats.lbl.length )
+console.log(chart_dats.lbl.length )
+//return
     const tensorData = convertToTensor(data);
     const {inputs, labels} = tensorData;
     // Train the model  
-    const d = await trainModel(model, inputs, labels,
-            tensorData, chart_dats.lbl.length );
-    console.log(d.preds );
+    console.log('Training-start');
+    await trainModel(model, inputs, labels,
+            tensorData, chart_dats.lbl.length
+            ,chart_dats  );
+    console.log('#fit-complete');
+    //pred
+    const [xs, preds] = testModel(model, data, tensorData, 
+                        chart_dats.lbl.length);
+    //console.log( preds );
     //chart-disp
-    var config = get_chart_config(chart_dats, d.preds);
+    var config = get_chart_config(chart_dats, preds);
     var ctx = document.getElementById('myChart').getContext('2d');
     window.myLine = new Chart(ctx, config);
 
